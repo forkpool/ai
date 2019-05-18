@@ -11,15 +11,18 @@ def get_face_similarity(img1, img2):
     image = face_recognition.load_image_file(img1)
     face_encodings = face_recognition.face_encodings(image, num_jitters=128)
     print(face_encodings)
+    if len(face_encodings) > 0:
+        unknown_image = face_recognition.load_image_file(img2)
+        unknown_face_encodings = face_recognition.face_encodings(unknown_image, num_jitters=128)
+        print(unknown_face_encodings)
 
-    unknown_image = face_recognition.load_image_file(img2)
-    unknown_face_encodings = face_recognition.face_encodings(unknown_image, num_jitters=128)
-    print(unknown_face_encodings)
+        if len(unknown_face_encodings) > 0:
+            return face_recognition.face_distance(
+                face_encodings, 
+                unknown_face_encodings[0]
+            )
 
-    if len(unknown_face_encodings) > 0:
-        return face_recognition.face_distance(face_encodings, unknown_face_encodings[0])
-
-    return [0]
+    return 0
 
 def main():
     """ 人脸识别
@@ -35,7 +38,7 @@ def main():
     print(img1, img1)
 
     # TODO: 修改以下内容，按要求实现
-    print(get_face_similarity(img1, img2))
+    print(get_face_similarity(img1, img1))
 
 if __name__ == '__main__':
     main()
